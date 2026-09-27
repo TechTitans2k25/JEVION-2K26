@@ -1,41 +1,71 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone, MessageCircle, UserCheck, GraduationCap, Users } from 'lucide-react';
 
-const CoordinatorsSection = () => {
+const CoordinatorsSection: React.FC = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   const faculty = [
-    { name: 'Mrs. M. Sheeba', role: 'Faculty Coordinator', phone: '+91 9944481587' },
-    { name: 'Mr. S. Sashikumar', role: 'Faculty Coordinator', phone: '+91 9629301892' }
+    { name: 'Mrs. M. Sheeba', role: 'Faculty Coordinator', dept: 'Department of IT', phone: '+91 9944481587' },
+    { name: 'Mr. S. Sashikumar', role: 'Faculty Coordinator', dept: 'Department of IT', phone: '+91 9629301892' }
   ];
 
   const student = [
-    { name: 'Vishva S', role: 'Student Coordinator', phone: '+91 9360729933' },
-    { name: 'Girivaran C', role: 'Student Coordinator', phone: '+91 8056306369' }
+    { name: 'Vishva S', role: 'Student Coordinator', dept: 'Tech Titans Leader', phone: '+91 9360729933' },
+    { name: 'Girivaran C', role: 'Student Coordinator', dept: 'Tech Titans Secretary', phone: '+91 8056306369' }
   ];
 
-  const CoordinatorCard = ({ person, index }: { person: any, index: number }) => (
+  const CoordinatorCard = ({ person, index, isFaculty }: { person: typeof faculty[0], index: number, isFaculty?: boolean }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-[#111214] rounded-2xl p-4 sm:p-5 border border-[#5C421D]/50 hover:border-[#D9A441] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(217,164,65,0.15)] flex flex-col items-center text-center group"
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      className="glass-card rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center group hover:border-[#FF6A00]/50 relative overflow-hidden"
     >
-      <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-[#FF6A00] to-[#D9A441] flex items-center justify-center text-xl sm:text-2xl md:text-3xl font-orbitron text-[#050505] font-bold mb-4 shadow-lg group-hover:shadow-[#FF6A00]/40 transition-shadow duration-300" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-        {person.name.charAt(0)}
-      </div>
-      <h3 className="text-base sm:text-lg font-orbitron font-bold text-[#F5F2EA] mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>{person.name}</h3>
-      <p className="text-[#A9A9A5] font-inter text-sm mb-6" style={{ fontFamily: "'Inter', sans-serif" }}>{person.role}</p>
+      {/* Top Inner Specular Highlight */}
+      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       
-      <div className="flex gap-4 w-full justify-center">
-        <a href={`tel:${person.phone.replace(/[^0-9+]/g, '')}`} className="flex items-center justify-center gap-2 bg-[#151618] hover:bg-[#FF6A00] text-[#F5F2EA] py-2 px-4 rounded-lg transition-colors duration-300 border border-[#5C421D] hover:border-transparent flex-1 font-inter text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
-          <Phone size={16} />
+      {/* Avatar with Halo Glow */}
+      <div className="relative mb-4">
+        <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#E5B842] opacity-40 blur-sm group-hover:opacity-80 transition-opacity" />
+        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#FF6A00] via-[#FF8A1F] to-[#D94800] flex items-center justify-center text-xl sm:text-2xl font-orbitron font-extrabold text-[#060608] shadow-lg">
+          {person.name.replace(/^(Mrs\.|Mr\.)\s*/, '').charAt(0)}
+        </div>
+      </div>
+
+      {/* Role Pill */}
+      <span className={`text-[10px] tracking-wider font-orbitron font-bold px-2.5 py-0.5 rounded-full mb-2 ${
+        isFaculty 
+          ? 'bg-[#E5B842]/15 text-[#FFE2A3] border border-[#E5B842]/30'
+          : 'bg-[#FF6A00]/15 text-[#FF8A1F] border border-[#FF6A00]/30'
+      }`}>
+        {person.role}
+      </span>
+
+      <h3 className="text-base sm:text-lg font-orbitron font-bold text-[#F8F6F0] mb-0.5 group-hover:text-[#FF8A1F] transition-colors">
+        {person.name}
+      </h3>
+      <p className="text-[#A3A5AF] font-inter text-xs sm:text-sm mb-6">
+        {person.dept}
+      </p>
+      
+      {/* Glass Action Buttons */}
+      <div className="grid grid-cols-2 gap-3 w-full mt-auto">
+        <a 
+          href={`tel:${person.phone.replace(/[^0-9+]/g, '')}`} 
+          className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl glass-panel text-xs sm:text-sm font-semibold font-inter text-[#F8F6F0] hover:text-[#060608] hover:bg-[#FF6A00] hover:border-transparent transition-all duration-300"
+        >
+          <Phone className="w-3.5 h-3.5" />
           <span>Call</span>
         </a>
-        <a href={`https://wa.me/${person.phone.replace(/[^0-9+]/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-[#151618] hover:bg-[#25D366] text-[#F5F2EA] py-2 px-4 rounded-lg transition-colors duration-300 border border-[#5C421D] hover:border-transparent flex-1 font-inter text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
-          <MessageCircle size={16} />
+        <a 
+          href={`https://wa.me/${person.phone.replace(/[^0-9]/g, '')}`} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl glass-panel text-xs sm:text-sm font-semibold font-inter text-[#F8F6F0] hover:text-[#060608] hover:bg-[#25D366] hover:border-transparent transition-all duration-300"
+        >
+          <MessageCircle className="w-3.5 h-3.5" />
           <span>WhatsApp</span>
         </a>
       </div>
@@ -43,43 +73,63 @@ const CoordinatorsSection = () => {
   );
 
   return (
-    <section className="py-20 bg-[#0D0E10] text-[#F5F2EA] relative" id="coordinators">
-      <div className="container mx-auto px-4 md:px-6 relative z-10" ref={ref}>
+    <section className="py-12 sm:py-16 md:py-24 relative z-10" id="coordinators">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-5xl" ref={ref}>
+        
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-orbitron font-bold mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-            Event <span className="text-[#D9A441]">Coordinators</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-pill mb-3">
+            <Users className="w-3.5 h-3.5 text-[#E5B842]" />
+            <span className="text-[10px] sm:text-xs font-orbitron font-semibold tracking-widest text-[#FFE2A3] uppercase">
+              ORGANIZING TEAM
+            </span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-orbitron font-extrabold text-[#F8F6F0] mb-3 tracking-tight">
+            SYMPOSIUM <span className="text-gradient">COORDINATORS</span>
           </h2>
-          <p className="text-[#A9A9A5] font-inter" style={{ fontFamily: "'Inter', sans-serif" }}>Get in touch with us for any queries.</p>
+          <p className="text-[#A3A5AF] font-inter text-sm sm:text-base max-w-xl mx-auto">
+            Reach out directly for registration assistance, event guidelines, or venue navigation.
+          </p>
         </motion.div>
 
-        <div className="max-w-5xl mx-auto space-y-16">
+        {/* Coordinators Grid */}
+        <div className="space-y-12 sm:space-y-16">
+          {/* Faculty Section */}
           <div>
-            <h3 className="text-lg sm:text-xl md:text-2xl font-orbitron font-semibold text-[#FF8A1F] mb-8 text-center border-b border-[#5C421D]/30 pb-4 inline-block mx-auto" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-              Faculty Coordinators
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <GraduationCap className="w-5 h-5 text-[#E5B842]" />
+              <h3 className="text-base sm:text-lg md:text-xl font-orbitron font-bold text-[#FFE2A3] tracking-wider uppercase">
+                Faculty Coordinators
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
               {faculty.map((person, i) => (
-                <CoordinatorCard key={i} person={person} index={i} />
+                <CoordinatorCard key={i} person={person} index={i} isFaculty />
               ))}
             </div>
           </div>
 
+          {/* Student Section */}
           <div>
-            <h3 className="text-lg sm:text-xl md:text-2xl font-orbitron font-semibold text-[#FF8A1F] mb-8 text-center border-b border-[#5C421D]/30 pb-4 inline-block mx-auto" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-              Student Coordinators
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <UserCheck className="w-5 h-5 text-[#FF8A1F]" />
+              <h3 className="text-base sm:text-lg md:text-xl font-orbitron font-bold text-[#FF8A1F] tracking-wider uppercase">
+                Student Coordinators
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
               {student.map((person, i) => (
                 <CoordinatorCard key={i} person={person} index={i + 2} />
               ))}
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

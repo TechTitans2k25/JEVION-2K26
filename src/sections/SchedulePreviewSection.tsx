@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, ArrowRight } from 'lucide-react';
+import { MapPin, Clock, ArrowRight, Calendar } from 'lucide-react';
 
 const scheduleData = {
   'DAY 1': [
-    { time: 'TBA', title: 'Inauguration Ceremony', loc: 'Main Auditorium' },
-    { time: 'TBA', title: 'Tech Talk - Paper Presentation', loc: 'IT Seminar Hall' },
-    { time: 'TBA', title: 'EraseX - Debugging', loc: 'Lab' },
-    { time: 'TBA', title: 'Titan 11 - IPL Auction', loc: 'Seminar Hall' },
-    { time: 'TBA', title: 'Insta Lens - Photography', loc: 'Campus' },
-    { time: 'TBA', title: 'Think & Link', loc: 'Seminar Hall' }
+    { time: '09:00 AM', title: 'Grand Inauguration Ceremony', loc: 'Main Auditorium', category: 'General' },
+    { time: '10:30 AM', title: 'Tech Talk — Paper Presentation', loc: 'IT Seminar Hall', category: 'Technical' },
+    { time: '11:45 AM', title: 'EraseX — Debugging Battle', loc: 'Programming Lab 1 & 2', category: 'Technical' },
+    { time: '01:30 PM', title: 'Titan 11 — IPL Auction Arena', loc: 'Seminar Hall B', category: 'Non-Technical' },
+    { time: '02:45 PM', title: 'Insta Lens — Photography Submission', loc: 'DSU Campus Ground', category: 'Non-Technical' },
+    { time: '03:30 PM', title: 'Think & Link — Connection Challenge', loc: 'Lecture Theatre 6th Floor', category: 'Non-Technical' }
   ],
   'DAY 2': [
-    { time: 'TBA', title: 'Code Hack - Mini Hackathon', loc: 'Lab' },
-    { time: 'TBA', title: 'Hunt IQ - Quiz', loc: 'Seminar Hall' },
-    { time: 'TBA', title: 'Aurora Films - Short Film', loc: 'Auditorium' },
-    { time: 'TBA', title: 'Nayakan - Guess the Movie', loc: 'Seminar Hall' },
-    { time: 'TBA', title: 'Secret Hunt - Treasure Hunt', loc: 'Campus' },
-    { time: 'TBA', title: 'Valedictory Function', loc: 'Main Auditorium' }
+    { time: '09:30 AM', title: 'Code Hack — Mini Hackathon Sprint', loc: 'Innovation Lab', category: 'Technical' },
+    { time: '11:00 AM', title: 'Hunt IQ — Rapid Technical Quiz', loc: 'IT Seminar Hall', category: 'Technical' },
+    { time: '01:30 PM', title: 'Aurora Films — Short Film Screening', loc: 'Central Auditorium', category: 'Non-Technical' },
+    { time: '02:30 PM', title: 'Nayakan — Cinema Trivia Battle', loc: 'Seminar Hall A', category: 'Non-Technical' },
+    { time: '03:30 PM', title: 'Secret Hunt — Campus Treasure Hunt', loc: 'University Campus', category: 'Non-Technical' },
+    { time: '04:30 PM', title: 'Valedictory & Award Ceremony', loc: 'Main Auditorium', category: 'General' }
   ]
 };
 
@@ -26,92 +26,110 @@ const SchedulePreviewSection: React.FC = () => {
   const [activeDay, setActiveDay] = useState<'DAY 1' | 'DAY 2'>('DAY 1');
 
   return (
-    <section className="relative py-20 px-6 bg-gradient-to-b from-[#050505] to-[#0D0E10] overflow-hidden">
-      {/* Background patterns */}
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#D9A441] via-transparent to-transparent pointer-events-none" />
-      
+    <section className="relative py-12 sm:py-16 md:py-24 px-4 sm:px-6 overflow-hidden" id="schedule">
+      {/* Subtle Background Glow */}
+      <div className="absolute top-1/2 left-1/4 w-[450px] h-[450px] bg-[radial-gradient(circle,rgba(255,106,0,0.06)_0%,transparent_70%)] pointer-events-none z-0" />
+
       <div className="max-w-5xl mx-auto relative z-10">
+        
+        {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#F5F2EA] mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-            EVENT <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6A00] to-[#D9A441]">SCHEDULE</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-pill mb-3">
+            <Calendar className="w-3.5 h-3.5 text-[#FF8A1F]" />
+            <span className="text-[10px] sm:text-xs font-orbitron font-semibold tracking-widest text-[#FFE2A3] uppercase">
+              SYMPOSIUM TIMELINE
+            </span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-orbitron font-extrabold text-[#F8F6F0] mb-4 tracking-tight">
+            SYMPOSIUM <span className="text-gradient">SCHEDULE</span>
           </h2>
-          <p className="text-[#A9A9A5] max-w-2xl mx-auto">
-            Mark your calendars for two days of non-stop technical brilliance.
+          <p className="text-[#A3A5AF] max-w-xl mx-auto text-sm sm:text-base font-inter">
+            Two packed days of innovation, competitions, screenings, and celebrations.
           </p>
         </div>
 
         {/* Day Toggles */}
-        <div className="flex justify-center space-x-4 mb-16">
-          {(['DAY 1', 'DAY 2'] as const).map((day) => (
-            <button
-              key={day}
-              onClick={() => setActiveDay(day)}
-              className={`px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 border ${
-                activeDay === day
-                  ? 'bg-gradient-to-r from-[#FF6A00] to-[#D9A441] text-[#050505] border-transparent shadow-[0_0_20px_rgba(255,106,0,0.3)]'
-                  : 'bg-transparent text-[#A9A9A5] border-[#5C421D] hover:border-[#D9A441] hover:text-[#F5F2EA]'
-              }`}
-              style={{ fontFamily: "'Orbitron', sans-serif" }}
-            >
-              {day}
-            </button>
-          ))}
+        <div className="flex justify-center gap-3 sm:gap-4 mb-14">
+          {(['DAY 1', 'DAY 2'] as const).map((day) => {
+            const isActive = activeDay === day;
+            return (
+              <button
+                key={day}
+                onClick={() => setActiveDay(day)}
+                className={`px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-orbitron font-bold text-xs sm:text-sm tracking-wider transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? 'glass-btn-primary text-[#060608]'
+                    : 'glass-panel text-[#A3A5AF] hover:text-[#F8F6F0] hover:border-[#FF6A00]/40'
+                }`}
+              >
+                {day} — {day === 'DAY 1' ? '14 OCT' : '15 OCT'}
+              </button>
+            );
+          })}
         </div>
 
         {/* Timeline */}
         <div className="relative">
-          {/* Connecting Line */}
-          <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-[#FF6A00] via-[#D9A441] to-transparent transform md:-translate-x-1/2 opacity-30" />
+          {/* Luminous Central / Left Line */}
+          <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#FF6A00] via-[#E5B842]/60 to-transparent transform md:-translate-x-1/2 opacity-40 z-0" />
 
-          <div className="space-y-8">
-            {scheduleData[activeDay].map((item, index) => (
-              <motion.div
-                key={`${activeDay}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`relative flex flex-col md:flex-row items-start md:items-center ${
-                  index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                }`}
-              >
-                {/* Timeline Dot */}
-                <div className="absolute left-[16px] md:left-1/2 w-3 h-3 rounded-full bg-[#FF6A00] shadow-[0_0_10px_#FF6A00] transform -translate-x-1/2 mt-6 md:mt-0 z-10 border-2 border-[#050505]" />
-                
-                <div className={`ml-8 md:ml-0 md:w-1/2 flex ${index % 2 === 0 ? 'md:justify-start md:pl-12' : 'md:justify-end md:pr-12'} w-full`}>
-                  <div className="bg-[#111214] border border-[#5C421D]/30 p-5 sm:p-6 rounded-xl w-full max-w-md group hover:border-[#D9A441]/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(217,164,65,0.1)] relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#FF6A00]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    <div className="relative z-10">
-                      <div className="flex items-center space-x-2 text-[#D9A441] mb-2 text-xs sm:text-sm font-semibold">
-                        <Clock className="w-4 h-4" />
-                        <span>{item.time}</span>
+          <div className="space-y-6 sm:space-y-8">
+            <AnimatePresence mode="wait">
+              {scheduleData[activeDay].map((item, index) => (
+                <motion.div
+                  key={`${activeDay}-${index}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                  className={`relative flex flex-col md:flex-row items-start md:items-center ${
+                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
+                  }`}
+                >
+                  {/* Timeline Glowing Node */}
+                  <div className="absolute left-[20px] md:left-1/2 w-4 h-4 rounded-full bg-[#FF6A00] shadow-[0_0_12px_#FF6A00] transform -translate-x-1/2 mt-5 md:mt-0 z-10 border-2 border-[#060608]" />
+                  
+                  <div className={`ml-10 md:ml-0 md:w-1/2 flex ${index % 2 === 0 ? 'md:justify-start md:pl-10' : 'md:justify-end md:pr-10'} w-full`}>
+                    <div className="glass-card rounded-2xl p-5 sm:p-6 w-full max-w-md group hover:border-[#FF6A00]/50 relative overflow-hidden">
+                      {/* Top Specular Line */}
+                      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+                      
+                      <div className="flex items-center justify-between gap-2 mb-2.5">
+                        <div className="flex items-center gap-1.5 text-[#FF8A1F] text-xs sm:text-sm font-orbitron font-semibold">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>{item.time}</span>
+                        </div>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-orbitron font-medium bg-white/[0.05] text-[#A3A5AF] border border-white/[0.08]">
+                          {item.category}
+                        </span>
                       </div>
-                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-[#F5F2EA] mb-3" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+
+                      <h3 className="text-base sm:text-lg font-orbitron font-bold text-[#F8F6F0] mb-2 group-hover:text-[#FF8A1F] transition-colors">
                         {item.title}
                       </h3>
-                      <div className="flex items-center space-x-2 text-[#A9A9A5] text-sm">
-                        <MapPin className="w-4 h-4" />
+
+                      <div className="flex items-center gap-1.5 text-[#A3A5AF] text-xs sm:text-sm font-inter">
+                        <MapPin className="w-3.5 h-3.5 text-[#E5B842]" />
                         <span>{item.loc}</span>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         </div>
 
-        <div className="mt-16 text-center">
+        {/* View Full Schedule CTA */}
+        <div className="mt-14 sm:mt-16 text-center">
           <Link
             to="/schedule"
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-transparent border border-[#5C421D] hover:border-[#FF6A00] text-[#F5F2EA] rounded-lg font-bold transition-all duration-300 hover:bg-[#111214] group"
-            style={{ fontFamily: "'Orbitron', sans-serif" }}
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl glass-btn-secondary font-orbitron text-xs sm:text-sm font-bold tracking-wider group"
           >
-            <span>VIEW FULL SCHEDULE</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform text-[#FF6A00]" />
+            <span>VIEW FULL TIMETABLE & ROUNDS</span>
+            <ArrowRight className="w-4 h-4 text-[#FF8A1F] transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
+
       </div>
     </section>
   );
