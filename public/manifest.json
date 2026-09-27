@@ -1,0 +1,17 @@
+{
+  "name": "JEVIX 2K26",
+  "short_name": "JEVIX",
+  "description": "A National Level Technical Symposium — Department of Information Technology, Dhanalakshmi Srinivasan University",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
