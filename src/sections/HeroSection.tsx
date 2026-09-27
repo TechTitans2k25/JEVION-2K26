@@ -137,6 +137,14 @@ const HeroSection: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full max-w-5xl">
+        <motion.img 
+          src="/logo.jpg" 
+          alt="JEVION 2K26" 
+          className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full object-cover mx-auto mb-4 sm:mb-6 shadow-[0_0_30px_rgba(255,106,0,0.3)]"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+        />
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

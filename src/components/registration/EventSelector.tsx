@@ -9,11 +9,17 @@ interface EventSelectorProps {
   error?: string;
 }
 
-const mockEvents = [
-  { id: 'e1', name: 'Hackathon', day: 'Day 1', category: 'Technical' },
-  { id: 'e2', name: 'Code Debugging', day: 'Day 1', category: 'Technical' },
-  { id: 'e3', name: 'Gaming Tournament', day: 'Day 2', category: 'Non-Technical' },
-  { id: 'e4', name: 'Project Expo', day: 'Day 2', category: 'Technical' },
+const jevionEvents = [
+  { id: 'tech-talk', name: 'Tech Talk (Paper Presentation)', day: 'Day 1', category: 'Technical' },
+  { id: 'erasex', name: 'EraseX (Debugging)', day: 'Day 1', category: 'Technical' },
+  { id: 'titan-11', name: 'Titan 11 (IPL Auction)', day: 'Day 1', category: 'Non-Technical' },
+  { id: 'insta-lens', name: 'Insta Lens (Photography)', day: 'Day 1', category: 'Non-Technical' },
+  { id: 'think-link', name: 'Think & Link (Connection)', day: 'Day 1', category: 'Non-Technical' },
+  { id: 'code-hack', name: 'Code Hack (Mini Hackathon)', day: 'Day 2', category: 'Technical' },
+  { id: 'hunt-iq', name: 'Hunt IQ (Quiz)', day: 'Day 2', category: 'Technical' },
+  { id: 'aurora-films', name: 'Aurora Films (Short Film)', day: 'Day 2', category: 'Non-Technical' },
+  { id: 'nayakan', name: 'Nayakan (Guess the Movie)', day: 'Day 2', category: 'Non-Technical' },
+  { id: 'secret-hunt', name: 'Secret Hunt (Treasure Hunt)', day: 'Day 2', category: 'Non-Technical' },
 ];
 
 export const EventSelector: React.FC<EventSelectorProps> = ({ setValue, watch, error }) => {
@@ -27,7 +33,7 @@ export const EventSelector: React.FC<EventSelectorProps> = ({ setValue, watch, e
     }
   };
 
-  const days = Array.from(new Set(mockEvents.map(e => e.day)));
+  const days = Array.from(new Set(jevionEvents.map(e => e.day)));
 
   return (
     <div className="space-y-8">
@@ -37,7 +43,7 @@ export const EventSelector: React.FC<EventSelectorProps> = ({ setValue, watch, e
         <div key={day} className="space-y-4">
           <h3 className="text-xl font-bold font-orbitron text-[#D9A441]">{day}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {mockEvents.filter(e => e.day === day).map(event => {
+            {jevionEvents.filter(e => e.day === day).map(event => {
               const isSelected = selectedEvents.includes(event.id);
               return (
                 <div 

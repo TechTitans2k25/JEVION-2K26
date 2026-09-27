@@ -9,6 +9,7 @@ import { ParticipantForm } from '../components/registration/ParticipantForm';
 import { EventSelector } from '../components/registration/EventSelector';
 import { PaymentInfo } from '../components/registration/PaymentInfo';
 import { Share2, Eye } from 'lucide-react';
+import { submitRegistration, type RegistrationData } from '../services/googleSheets';
 
 const phoneRegex = /^[6-9]\d{9}$/;
 
@@ -66,9 +67,25 @@ export const RegisterPage: React.FC = () => {
     setStep(prev => Math.max(prev - 1, 1));
   };
 
-  const onSubmit = (data: RegistrationFormData) => {
+  const onSubmit = async (data: RegistrationFormData) => {
     // Generate ID on final submit to move to confirmation
     const newId = generateRegistrationId();
+    
+    const registrationData: RegistrationData = {
+      registrationId: newId,
+      name: data.name,
+      college: data.college,
+      department: data.department,
+      year: data.year,
+      email: data.email,
+      phone: data.phone,
+      selectedEvents: data.events,
+      paymentStatus: 'PENDING',
+      timestamp: new Date().toISOString()
+    };
+    
+    await submitRegistration(registrationData);
+    
     setRegId(newId);
     setStep(5);
   };
@@ -127,6 +144,7 @@ export const RegisterPage: React.FC = () => {
                       </svg>
                     </div>
                     <h2 className="text-3xl font-orbitron font-bold text-[#F5F2EA]">REGISTRATION SUCCESSFUL</h2>
+                    <p className="text-green-400 font-medium mb-6">Registration submitted to Google Sheets successfully!</p>
                     
                     <div className="bg-[#111214] p-6 rounded-xl border border-[#151618] inline-block text-left w-full max-w-md mx-auto">
                       <p className="text-[#A9A9A5] text-sm uppercase">Registration ID</p>

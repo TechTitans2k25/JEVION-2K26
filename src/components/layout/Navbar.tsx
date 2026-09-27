@@ -56,7 +56,8 @@ const Navbar: React.FC = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link to="/" className="flex items-center gap-2">
+              <Link to="/" className="flex items-center gap-2 sm:gap-3">
+                <img src="/logo.jpg" alt="JEVION 2K26" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover" />
                 <span className="font-orbitron font-bold text-lg sm:text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-[#D9A441] to-[#FFE2A3]">
                   JEVION
                 </span>
