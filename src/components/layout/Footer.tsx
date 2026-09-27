@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Column 1 */}
           <div className="flex flex-col space-y-4">
-            <img src="/logo.jpg" alt="JEVION 2K26" className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover mb-3" />
+            <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="JEVION 2K26" className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover mb-3" />
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#F5F2EA]" style={{ fontFamily: "'Orbitron', sans-serif" }}>
               JEVION 2K26
             </h2>
