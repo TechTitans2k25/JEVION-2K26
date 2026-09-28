@@ -3,9 +3,9 @@
 //
 // SETUP INSTRUCTIONS:
 // 1. Go to https://script.google.com
-// 2. Create a new project
-// 3. Paste this code
-// 4. Run the 'setupSheets' function once to create all sheets
+// 2. Create a new project (or open existing JEVION 2K26 sheet)
+// 3. Paste this code into Code.gs
+// 4. Run the 'setupSheets' function once to create all sheets with updated headers
 // 5. Deploy > New Deployment > Web App
 //    - Execute as: Me
 //    - Who has access: Anyone
@@ -44,7 +44,12 @@ function handleRegistration(data) {
     data.year || '',
     data.email || '',
     data.phone || '',
+    data.teamName || 'Solo',
+    data.teamSize || 1,
+    data.teamMembers || 'Solo',
     data.selectedEvents || '',
+    data.transactionId || 'PENDING',
+    data.amountPaid || 200,
     data.paymentStatus || 'PENDING',
     data.timestamp || new Date().toISOString()
   ];
@@ -81,9 +86,8 @@ function handleRegistration(data) {
   if (isDay1) {
     var day1Sheet = ss.getSheetByName('Day 1');
     if (day1Sheet) {
-      // Add which day1 events this person registered for
       var day1Row = row.slice();
-      day1Row[7] = events.filter(function(e) { return day1Events.indexOf(e) !== -1; }).join(', ');
+      day1Row[10] = events.filter(function(e) { return day1Events.indexOf(e) !== -1; }).join(', ');
       day1Sheet.appendRow(day1Row);
     }
   }
@@ -93,7 +97,7 @@ function handleRegistration(data) {
     var day2Sheet = ss.getSheetByName('Day 2');
     if (day2Sheet) {
       var day2Row = row.slice();
-      day2Row[7] = events.filter(function(e) { return day2Events.indexOf(e) !== -1; }).join(', ');
+      day2Row[10] = events.filter(function(e) { return day2Events.indexOf(e) !== -1; }).join(', ');
       day2Sheet.appendRow(day2Row);
     }
   }
@@ -102,19 +106,24 @@ function handleRegistration(data) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// Run this function ONCE to create all the required sheets with headers
+// Run this function ONCE to create/update all the required sheets with headers
 function setupSheets() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   
   var headers = [
     'Registration ID',
-    'Name',
+    'Lead Name',
     'College',
     'Department',
     'Year',
     'Email',
     'Phone',
+    'Team Name',
+    'Team Size',
+    'Team Members',
     'Selected Events',
+    'UPI Transaction / UTR',
+    'Amount Paid (INR)',
     'Payment Status',
     'Timestamp'
   ];
@@ -141,32 +150,34 @@ function setupSheets() {
       sheet = ss.insertSheet(name);
     }
     
-    // Set headers if first row is empty
-    var firstCell = sheet.getRange('A1').getValue();
-    if (!firstCell) {
-      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-      
-      // Format headers
-      var headerRange = sheet.getRange(1, 1, 1, headers.length);
-      headerRange.setFontWeight('bold');
-      headerRange.setBackground('#FF6A00');
-      headerRange.setFontColor('#FFFFFF');
-      
-      // Set column widths
-      sheet.setColumnWidth(1, 150); // Reg ID
-      sheet.setColumnWidth(2, 200); // Name
-      sheet.setColumnWidth(3, 250); // College
-      sheet.setColumnWidth(4, 200); // Department
-      sheet.setColumnWidth(5, 80);  // Year
-      sheet.setColumnWidth(6, 250); // Email
-      sheet.setColumnWidth(7, 150); // Phone
-      sheet.setColumnWidth(8, 300); // Events
-      sheet.setColumnWidth(9, 120); // Payment
-      sheet.setColumnWidth(10, 200); // Timestamp
-      
-      // Freeze header row
-      sheet.setFrozenRows(1);
-    }
+    // Set headers on Row 1
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    
+    // Format headers
+    var headerRange = sheet.getRange(1, 1, 1, headers.length);
+    headerRange.setFontWeight('bold');
+    headerRange.setBackground('#FF6A00');
+    headerRange.setFontColor('#FFFFFF');
+    
+    // Set column widths
+    sheet.setColumnWidth(1, 150); // Reg ID
+    sheet.setColumnWidth(2, 200); // Lead Name
+    sheet.setColumnWidth(3, 240); // College
+    sheet.setColumnWidth(4, 180); // Department
+    sheet.setColumnWidth(5, 70);  // Year
+    sheet.setColumnWidth(6, 240); // Email
+    sheet.setColumnWidth(7, 140); // Phone
+    sheet.setColumnWidth(8, 160); // Team Name
+    sheet.setColumnWidth(9, 90);  // Team Size
+    sheet.setColumnWidth(10, 300); // Team Members
+    sheet.setColumnWidth(11, 280); // Events
+    sheet.setColumnWidth(12, 200); // UTR
+    sheet.setColumnWidth(13, 140); // Amount
+    sheet.setColumnWidth(14, 130); // Status
+    sheet.setColumnWidth(15, 190); // Timestamp
+    
+    // Freeze header row
+    sheet.setFrozenRows(1);
   });
   
   // Delete default 'Sheet1' if it exists and is empty
@@ -176,5 +187,5 @@ function setupSheets() {
   }
   
   SpreadsheetApp.flush();
-  Logger.log('All sheets created successfully!');
+  Logger.log('All sheets created/updated successfully with Team & UTR headers!');
 }

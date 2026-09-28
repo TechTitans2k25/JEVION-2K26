@@ -43,6 +43,7 @@ const Navbar: React.FC = () => {
   }, [isOpen]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+  const isHome = location.pathname === '/';
 
   return (
     <>
@@ -50,8 +51,8 @@ const Navbar: React.FC = () => {
         initial={{ y: 0 }}
         animate={{ y: scrollDirection === 'down' && scrolled && !isOpen ? '-100%' : '0%' }}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-          scrolled 
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+          scrolled || !isHome
             ? 'glass-panel border-b border-white/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.6)] py-3' 
             : 'bg-gradient-to-b from-[#060608]/90 via-[#060608]/50 to-transparent py-4'
         }`}

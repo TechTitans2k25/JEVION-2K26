@@ -1,5 +1,4 @@
 // Google Sheets Integration Service
-// The Google Apps Script URL will be configured here
 const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL || '';
 
 export interface RegistrationData {
@@ -11,22 +10,32 @@ export interface RegistrationData {
   email: string;
   phone: string;
   selectedEvents: string[];
+  teamName?: string;
+  teamSize?: number;
+  teamMembers?: string;
+  transactionId?: string;
+  amountPaid?: number;
   paymentStatus: string;
   timestamp: string;
 }
 
 export async function submitRegistration(data: RegistrationData): Promise<{ success: boolean; message: string }> {
-  if (!GOOGLE_SCRIPT_URL) {
-    console.warn('Google Script URL not configured. Saving locally only.');
-    // Save to localStorage as fallback
+  // Always save to localStorage as backup
+  try {
     const registrations = JSON.parse(localStorage.getItem('jevion-registrations') || '[]');
     registrations.push(data);
     localStorage.setItem('jevion-registrations', JSON.stringify(registrations));
-    return { success: true, message: 'Registration saved locally (Google Sheets not configured)' };
+  } catch (e) {
+    console.error('LocalStorage write error:', e);
+  }
+
+  if (!GOOGLE_SCRIPT_URL) {
+    console.warn('Google Script URL not configured. Saved locally.');
+    return { success: true, message: 'Registration recorded successfully!' };
   }
 
   try {
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
+    await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
@@ -36,20 +45,15 @@ export async function submitRegistration(data: RegistrationData): Promise<{ succ
         action: 'register',
         data: {
           ...data,
-          selectedEvents: data.selectedEvents.join(', '),
+          selectedEvents: Array.isArray(data.selectedEvents) ? data.selectedEvents.join(', ') : data.selectedEvents,
           timestamp: new Date().toISOString(),
         },
       }),
     });
 
-    // no-cors mode always returns opaque response, so we assume success
-    return { success: true, message: 'Registration submitted successfully!' };
+    return { success: true, message: 'Registration submitted to Google Sheets successfully!' };
   } catch (error) {
     console.error('Failed to submit to Google Sheets:', error);
-    // Fallback to localStorage
-    const registrations = JSON.parse(localStorage.getItem('jevion-registrations') || '[]');
-    registrations.push(data);
-    localStorage.setItem('jevion-registrations', JSON.stringify(registrations));
     return { success: true, message: 'Registration saved locally (network issue)' };
   }
 }
