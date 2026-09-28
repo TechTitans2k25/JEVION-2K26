@@ -46,6 +46,8 @@ export const RegisterPage: React.FC = () => {
 
   // Payment State
   const [transactionId, setTransactionId] = useState('');
+  const [paymentScreenshot, setPaymentScreenshot] = useState<string | null>(null);
+  const [showProofPreview, setShowProofPreview] = useState(false);
 
   // Automatically scroll to the top whenever the step changes so the user is never left stuck at the bottom
   useEffect(() => {
@@ -132,10 +134,12 @@ export const RegisterPage: React.FC = () => {
       transactionId: transactionId.trim() || 'PENDING_VERIFICATION',
       amountPaid: currentTeamSize * 200,
       paymentStatus: transactionId.trim() ? 'SUBMITTED' : 'PENDING',
+      paymentScreenshot: paymentScreenshot || undefined,
       timestamp: new Date().toISOString()
     };
     
     try {
+      localStorage.setItem('jevion-last-pass', JSON.stringify(registrationData));
       await submitRegistration(registrationData);
     } catch (e) {
       console.error('Submission error:', e);
@@ -219,6 +223,8 @@ export const RegisterPage: React.FC = () => {
                     teamSize={currentTeamSize}
                     transactionId={transactionId}
                     setTransactionId={setTransactionId}
+                    screenshot={paymentScreenshot}
+                    setScreenshot={setPaymentScreenshot}
                   />
                 )}
 
@@ -285,7 +291,60 @@ export const RegisterPage: React.FC = () => {
                           <p className="text-xs font-mono text-[#FFE2A3] tracking-widest">{transactionId}</p>
                         </div>
                       )}
+
+                      {paymentScreenshot && (
+                        <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between">
+                          <div>
+                            <p className="text-[#A3A5AF] text-[10px] font-orbitron uppercase">Payment Proof</p>
+                            <p className="text-xs font-inter text-emerald-400 font-semibold flex items-center gap-1.5 mt-0.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                              Screenshot Attached
+                            </p>
+                          </div>
+                          <img
+                            src={paymentScreenshot}
+                            alt="Payment Receipt"
+                            onClick={() => setShowProofPreview(true)}
+                            className="w-11 h-11 object-cover rounded-lg border border-emerald-500/40 hover:scale-105 transition-transform cursor-pointer shadow-md"
+                            title="Click to view full screenshot"
+                          />
+                        </div>
+                      )}
                     </div>
+
+                    {showProofPreview && paymentScreenshot && (
+                      <div 
+                        onClick={() => setShowProofPreview(false)}
+                        className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 text-left"
+                      >
+                        <div 
+                          onClick={(e) => e.stopPropagation()}
+                          className="glass-card max-w-md w-full p-4 rounded-3xl border border-white/20 relative shadow-2xl space-y-3"
+                        >
+                          <div className="flex justify-between items-center">
+                            <span className="font-orbitron font-bold text-xs text-[#F8F6F0]">Payment Screenshot</span>
+                            <button 
+                              onClick={() => setShowProofPreview(false)}
+                              className="p-1 text-[#A3A5AF] hover:text-white cursor-pointer font-bold text-sm"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          <div className="rounded-xl overflow-hidden bg-black/40 border border-white/10 max-h-[65vh] flex items-center justify-center">
+                            <img src={paymentScreenshot} alt="Payment Proof Full" className="w-full h-auto max-h-[65vh] object-contain rounded-lg" />
+                          </div>
+                          <div className="text-center">
+                            <button
+                              type="button"
+                              onClick={() => setShowProofPreview(false)}
+                              className="py-2 px-5 rounded-xl glass-btn-primary text-[#060608] font-orbitron text-xs font-bold"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     <div className="flex flex-col sm:flex-row gap-3.5 justify-center mt-6">
                       <button 

@@ -1,18 +1,94 @@
-import React, { useState } from 'react';
-import { CreditCard, Copy, Check, ExternalLink, ShieldCheck, Zap, Info } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { CreditCard, Copy, Check, ExternalLink, ShieldCheck, Zap, Info, UploadCloud, CheckCircle2, RefreshCw, Trash2, Eye, FileImage } from 'lucide-react';
 
 interface PaymentInfoProps {
   teamSize?: number;
   transactionId: string;
   setTransactionId: (val: string) => void;
+  screenshot?: string | null;
+  setScreenshot?: (val: string | null) => void;
 }
 
 export const PaymentInfo: React.FC<PaymentInfoProps> = ({
   teamSize = 1,
   transactionId,
-  setTransactionId
+  setTransactionId,
+  screenshot,
+  setScreenshot
 }) => {
   const [copied, setCopied] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [fileName, setFileName] = useState<string>('');
+  const [fileSize, setFileSize] = useState<string>('');
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+
+  const processImageFile = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file (PNG, JPG, JPEG, WEBP).');
+      return;
+    }
+    
+    setIsProcessing(true);
+    setFileName(file.name);
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Compress and resize image using canvas to ensure lightweight payload
+        const maxDimension = 1200;
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          const sizeInKb = Math.round((compressedDataUrl.length * 3) / 4 / 1024);
+          setFileSize(`${sizeInKb} KB`);
+          if (setScreenshot) {
+            setScreenshot(compressedDataUrl);
+          }
+        }
+        setIsProcessing(false);
+      };
+      img.onerror = () => {
+        setIsProcessing(false);
+        alert('Failed to load image file. Please try another screenshot.');
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processImageFile(file);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      processImageFile(file);
+    }
+  };
   const upiId = 'sankarank1977-1@okaxis';
   const payeeName = 'Sudalai S';
   const feePerPerson = 200;
@@ -151,6 +227,137 @@ export const PaymentInfo: React.FC<PaymentInfoProps> = ({
             <Info className="w-3.5 h-3.5 text-[#E5B842] shrink-0" />
             <span>Find this 12-digit number in your UPI app payment receipt / SMS.</span>
           </p>
+        </div>
+
+        {/* Payment Screenshot Upload Section */}
+        <div className="w-full max-w-md pt-5 border-t border-white/[0.08] text-left">
+          <label className="block text-xs font-orbitron font-bold text-[#F8F6F0] uppercase tracking-wider mb-2 flex items-center justify-between">
+            <span>Upload Payment Screenshot Proof</span>
+            <span className="text-[10px] text-[#E5B842] font-semibold tracking-normal normal-case">
+              (Optional / Recommended)
+            </span>
+          </label>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/png, image/jpeg, image/jpg, image/webp"
+            className="hidden"
+          />
+
+          {!screenshot ? (
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleDrop}
+              className="border-2 border-dashed border-white/20 hover:border-[#FF6A00] rounded-2xl p-5 text-center cursor-pointer transition-all duration-300 glass-panel group hover:bg-[#FF6A00]/[0.05]"
+            >
+              <div className="w-11 h-11 rounded-xl bg-[#FF6A00]/15 text-[#FF8A1F] flex items-center justify-center mx-auto mb-2.5 group-hover:scale-110 transition-transform">
+                <UploadCloud className="w-5 h-5" />
+              </div>
+              <p className="font-orbitron font-bold text-xs sm:text-sm text-[#F8F6F0] mb-1">
+                {isProcessing ? 'Compressing & processing screenshot...' : 'Tap to Upload Payment Screenshot'}
+              </p>
+              <p className="text-[11px] text-[#A3A5AF] font-inter">
+                Upload screenshot of GPay / PhonePe / Paytm payment success screen (JPG, PNG)
+              </p>
+            </div>
+          ) : (
+            <div className="glass-panel p-3.5 sm:p-4 rounded-2xl border border-emerald-500/40 flex items-center justify-between gap-3 bg-emerald-500/[0.04]">
+              <div className="flex items-center gap-3 overflow-hidden">
+                <div 
+                  onClick={() => setShowPreviewModal(true)}
+                  className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-emerald-500/40 cursor-pointer group shadow"
+                  title="Click to preview full screenshot"
+                >
+                  <img src={screenshot} alt="Payment Proof" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white">
+                    <Eye className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="truncate">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>Screenshot Attached</span>
+                  </div>
+                  <p className="text-xs font-inter text-[#F8F6F0] truncate max-w-[170px] sm:max-w-[210px] mt-0.5">
+                    {fileName || 'payment_proof.jpg'}
+                  </p>
+                  <p className="text-[10px] text-[#A3A5AF] font-inter">{fileSize}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setShowPreviewModal(true)}
+                  className="p-2 rounded-xl glass-panel text-[#FFE2A3] hover:text-white transition-colors"
+                  title="View full preview"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="p-2 rounded-xl glass-panel text-[#A3A5AF] hover:text-[#FFE2A3] transition-colors"
+                  title="Change Screenshot"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (setScreenshot) setScreenshot(null);
+                    setFileName('');
+                    setFileSize('');
+                  }}
+                  className="p-2 rounded-xl bg-red-500/15 border border-red-500/30 text-red-400 hover:text-red-300 transition-colors"
+                  title="Remove Screenshot"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Lightbox Modal */}
+          {showPreviewModal && screenshot && (
+            <div 
+              onClick={() => setShowPreviewModal(false)}
+              className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+            >
+              <div 
+                onClick={(e) => e.stopPropagation()}
+                className="glass-card max-w-md w-full p-4 rounded-3xl border border-white/20 relative shadow-2xl space-y-3"
+              >
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <FileImage className="w-4 h-4 text-[#FF8A1F]" />
+                    <span className="font-orbitron font-bold text-xs text-[#F8F6F0]">Payment Screenshot Preview</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowPreviewModal(false)}
+                    className="p-1 rounded-lg text-[#A3A5AF] hover:text-white cursor-pointer font-bold text-sm"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="rounded-xl overflow-hidden bg-black/40 border border-white/10 max-h-[65vh] flex items-center justify-center">
+                  <img src={screenshot} alt="Payment Proof Full" className="w-full h-auto max-h-[65vh] object-contain rounded-lg" />
+                </div>
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowPreviewModal(false)}
+                    className="py-2 px-5 rounded-xl glass-btn-primary text-[#060608] font-orbitron text-xs font-bold"
+                  >
+                    Close Preview
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
       </div>

@@ -16,6 +16,7 @@ export interface RegistrationData {
   transactionId?: string;
   amountPaid?: number;
   paymentStatus: string;
+  paymentScreenshot?: string;
   timestamp: string;
 }
 
