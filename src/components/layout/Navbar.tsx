@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
                   />
                 </div>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-orbitron font-extrabold text-lg sm:text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-[#FFFDF7] via-[#FFD269] to-[#E5B842]">
+                  <span className="nav-logo-jevion font-orbitron font-extrabold text-lg sm:text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-[#FFFDF7] via-[#FFD269] to-[#E5B842]">
                     JEVION
                   </span>
                   <span className="font-orbitron font-extrabold text-lg sm:text-xl md:text-2xl text-[#FF6A00]">

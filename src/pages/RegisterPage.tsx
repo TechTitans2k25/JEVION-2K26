@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -47,6 +47,11 @@ export const RegisterPage: React.FC = () => {
   // Payment State
   const [transactionId, setTransactionId] = useState('');
 
+  // Automatically scroll to the top whenever the step changes so the user is never left stuck at the bottom
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [step]);
+
   const {
     register,
     handleSubmit,
@@ -93,11 +98,13 @@ export const RegisterPage: React.FC = () => {
     }
 
     setStep(prev => Math.min(prev + 1, 5));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const prevStep = () => {
     setErrorMessage('');
     setStep(prev => Math.max(prev - 1, 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const onSubmit = async (data: RegistrationFormData) => {
@@ -167,6 +174,7 @@ export const RegisterPage: React.FC = () => {
             currentStep={step} 
             totalSteps={5} 
             labels={['Details', 'Events', 'Team', 'Payment', 'Done']} 
+            onStepClick={(target) => setStep(target)}
           />
 
           {errorMessage && (
@@ -202,6 +210,7 @@ export const RegisterPage: React.FC = () => {
                     teamMembers={teamMembers}
                     setTeamMembers={setTeamMembers}
                     leadName={formData.name}
+                    onProceedToPayment={nextStep}
                   />
                 )}
 

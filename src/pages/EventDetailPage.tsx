@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, useScroll } from 'framer-motion';
-import { ArrowLeft, Calendar, MapPin, Users, Award, Phone, Clock, CheckCircle2, Share2, Sparkles, ShieldAlert, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, Award, Phone, Clock, CheckCircle2, Share2, Sparkles, ShieldAlert, ArrowRight, MessageCircle } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { getEventBySlug } from '../data/events';
 import { Event } from '../types';
@@ -230,6 +230,58 @@ export const EventDetailPage: React.FC = () => {
               </div>
             )}
 
+            {/* Event Coordinators in Main Column */}
+            {((event.coordinators && event.coordinators.length > 0) || event.contact) && (
+              <div className="space-y-4">
+                <h3 className="text-xl sm:text-2xl font-orbitron font-extrabold text-[#F8F6F0] flex items-center gap-2">
+                  <Phone className="w-5 h-5 text-[#FF8A1F]" />
+                  <span>EVENT COORDINATORS & HELP DESK</span>
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  {(event.coordinators || [
+                    { role: 'Faculty Coordinator', name: event.contact?.name || 'Coordinator', phone: event.contact?.phone || '' }
+                  ]).map((coord, idx) => {
+                    const cleanPhone = coord.phone.replace(/[^0-9+]/g, '');
+                    const phone10 = coord.phone.replace(/[^0-9]/g, '').slice(-10);
+                    const waText = encodeURIComponent(`Hi ${coord.name}, I have a query regarding ${event.name} at JEVION 2K26.`);
+                    return (
+                      <div key={idx} className="glass-card rounded-2xl p-5 border border-white/10 hover:border-[#FF6A00]/40 transition-all flex flex-col justify-between">
+                        <div>
+                          <span className="text-[10px] font-orbitron font-bold px-2 py-0.5 rounded-full bg-[#FF6A00]/15 text-[#FF8A1F] border border-[#FF6A00]/30 uppercase tracking-wider inline-block mb-2">
+                            {coord.role}
+                          </span>
+                          <h4 className="font-orbitron font-bold text-base text-[#F8F6F0] mb-0.5">
+                            {coord.name}
+                          </h4>
+                          <p className="font-inter text-xs text-[#A3A5AF] mb-4">
+                            {coord.phone}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2 pt-3 border-t border-white/[0.08]">
+                          <a
+                            href={`tel:${cleanPhone}`}
+                            className="flex-1 py-2 px-3 rounded-xl glass-btn-primary text-[#060608] font-orbitron text-xs font-bold inline-flex items-center justify-center gap-1.5 shadow"
+                          >
+                            <Phone className="w-3.5 h-3.5" />
+                            <span>Call</span>
+                          </a>
+                          <a
+                            href={`https://wa.me/91${phone10}?text=${waText}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 py-2 px-3 rounded-xl bg-emerald-600/90 hover:bg-emerald-500 text-white font-orbitron text-xs font-bold inline-flex items-center justify-center gap-1.5 shadow transition-colors"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                            <span>WhatsApp</span>
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
           </div>
 
           {/* Sidebar (Right 1 col) */}
@@ -250,24 +302,53 @@ export const EventDetailPage: React.FC = () => {
                 </Link>
               </div>
 
-              {/* Event Coordinator */}
-              {event.contact && (
-                <div className="pt-2 border-t border-white/[0.08]">
-                  <h4 className="text-xs font-orbitron font-bold text-[#E5B842] uppercase tracking-wider mb-3">
-                    Event Coordinator
+              {/* Event Coordinators Sidebar */}
+              {((event.coordinators && event.coordinators.length > 0) || event.contact) && (
+                <div className="pt-2 border-t border-white/[0.08] space-y-3">
+                  <h4 className="text-xs font-orbitron font-bold text-[#E5B842] uppercase tracking-wider">
+                    Event Coordinators
                   </h4>
-                  <div className="flex items-center justify-between gap-3 p-3.5 rounded-2xl glass-panel border border-white/[0.06]">
-                    <div>
-                      <p className="font-orbitron font-bold text-sm text-[#F8F6F0]">{event.contact.name}</p>
-                      <p className="font-inter text-xs text-[#A3A5AF]">{event.contact.phone}</p>
-                    </div>
-                    <a
-                      href={`tel:${event.contact.phone.replace(/[^0-9+]/g, '')}`}
-                      className="p-2.5 rounded-xl glass-btn-primary text-[#060608] hover:scale-105 transition-transform"
-                      aria-label="Call coordinator"
-                    >
-                      <Phone className="w-4 h-4" />
-                    </a>
+                  <div className="space-y-2.5">
+                    {(event.coordinators || [
+                      { role: 'Coordinator', name: event.contact?.name || 'Coordinator', phone: event.contact?.phone || '' }
+                    ]).map((coord, idx) => {
+                      const cleanPhone = coord.phone.replace(/[^0-9+]/g, '');
+                      const phone10 = coord.phone.replace(/[^0-9]/g, '').slice(-10);
+                      const waText = encodeURIComponent(`Hi ${coord.name}, I have a query regarding ${event.name} at JEVION 2K26.`);
+                      return (
+                        <div key={idx} className="p-3.5 rounded-2xl glass-panel border border-white/[0.06] space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-orbitron font-semibold px-2 py-0.5 rounded-full bg-[#E5B842]/15 text-[#FFE2A3] uppercase">
+                              {coord.role}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-orbitron font-bold text-sm text-[#F8F6F0]">{coord.name}</p>
+                            <p className="font-inter text-xs text-[#A3A5AF]">{coord.phone}</p>
+                          </div>
+                          <div className="flex items-center gap-2 pt-1">
+                            <a
+                              href={`tel:${cleanPhone}`}
+                              className="flex-1 py-1.5 px-2.5 rounded-lg glass-btn-primary text-[#060608] text-[11px] font-orbitron font-bold inline-flex items-center justify-center gap-1"
+                              aria-label={`Call ${coord.name}`}
+                            >
+                              <Phone className="w-3 h-3" />
+                              <span>Call</span>
+                            </a>
+                            <a
+                              href={`https://wa.me/91${phone10}?text=${waText}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 py-1.5 px-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-orbitron font-bold inline-flex items-center justify-center gap-1 transition-colors"
+                              aria-label={`WhatsApp ${coord.name}`}
+                            >
+                              <MessageCircle className="w-3 h-3" />
+                              <span>Chat</span>
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}

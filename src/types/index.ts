@@ -10,6 +10,13 @@ export type ResultCategory = 'winner' | 'runner-up' | 'special-mention';
 export type GraphicsQuality = 'auto' | 'ultra' | 'high' | 'medium' | 'low';
 export type RegistrationStep = 'participant' | 'events' | 'team' | 'payment' | 'confirmation';
 
+export interface EventCoordinator {
+  role: string;
+  name: string;
+  phone: string;
+  email?: string;
+}
+
 export interface Event {
   id: string;
   slug: string;
@@ -31,6 +38,7 @@ export interface Event {
   eligibility: string | null;
   submission: string | null;
   contact: EventContact | null;
+  coordinators?: EventCoordinator[];
   registrationOpen: boolean;
   order: number;
 }

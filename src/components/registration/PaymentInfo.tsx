@@ -31,9 +31,19 @@ export const PaymentInfo: React.FC<PaymentInfoProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="payment-screen">
+      {/* Step Header */}
+      <div className="text-center mb-1">
+        <span className="text-[10px] sm:text-xs font-orbitron font-bold tracking-widest text-[#FF8A1F] uppercase px-3.5 py-1 rounded-full bg-[#FF6A00]/15 border border-[#FF6A00]/30 inline-block mb-2">
+          STEP 4 OF 5 • PAYMENT SCREEN
+        </span>
+        <h3 className="text-lg sm:text-2xl font-orbitron font-bold text-[#F8F6F0]">
+          COMPLETE REGISTRATION PAYMENT
+        </h3>
+      </div>
+
       {/* Amount Summary Header */}
-      <div className="glass-card rounded-2xl p-6 text-center border border-[#FF6A00]/40 relative overflow-hidden">
+      <div className="glass-card rounded-2xl p-5 sm:p-6 text-center border border-[#FF6A00]/40 relative overflow-hidden">
         <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF8A1F] to-transparent" />
         
         <span className="text-[11px] font-orbitron font-semibold tracking-widest text-[#A3A5AF] uppercase block mb-1">

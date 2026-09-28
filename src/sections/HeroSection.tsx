@@ -28,15 +28,43 @@ const HeroSection: React.FC = () => {
           85% { opacity: var(--p-opacity); }
           100% { transform: translateY(-10vh); opacity: 0; }
         }
-        @keyframes meteor {
-          0% { transform: translate(120px, -120px) rotate(-35deg); opacity: 0; }
-          15% { opacity: 0.9; }
-          60% { opacity: 0.9; }
-          100% { transform: translate(-250px, 250px) rotate(-35deg); opacity: 0; }
+        @keyframes shootingStar1 {
+          0% {
+            transform: translate3d(140px, -140px, 0) rotate(-35deg);
+            opacity: 0;
+          }
+          3% {
+            opacity: 1;
+          }
+          14% {
+            transform: translate3d(-380px, 380px, 0) rotate(-35deg);
+            opacity: 1;
+          }
+          18%, 100% {
+            transform: translate3d(-520px, 520px, 0) rotate(-35deg);
+            opacity: 0;
+          }
+        }
+        @keyframes shootingStar2 {
+          0% {
+            transform: translate3d(100px, -100px, 0) rotate(-38deg);
+            opacity: 0;
+          }
+          3% {
+            opacity: 0.9;
+          }
+          12% {
+            transform: translate3d(-320px, 320px, 0) rotate(-38deg);
+            opacity: 0.9;
+          }
+          16%, 100% {
+            transform: translate3d(-440px, 440px, 0) rotate(-38deg);
+            opacity: 0;
+          }
         }
         @keyframes portalAura {
           0%, 100% { transform: scale(1); opacity: 0.55; }
-          50% { transform: scale(1.1); opacity: 0.85; }
+          50% { transform: scale(1.08); opacity: 0.85; }
         }
       `}} />
 
@@ -45,7 +73,8 @@ const HeroSection: React.FC = () => {
         <img 
           src={`${import.meta.env.BASE_URL}hero-bg.png`} 
           alt="JEVION 2K26 Gateway" 
-          className="w-full h-full object-cover object-center filter brightness-[0.92] contrast-[1.05] transition-transform duration-1000 scale-[1.02]"
+          className="w-full h-full object-cover object-[50%_25%] md:object-center filter brightness-[0.95] contrast-[1.08] select-none pointer-events-none"
+          style={{ imageRendering: '-webkit-optimize-contrast' }}
         />
 
         {/* Atmospheric Overlays */}
@@ -56,24 +85,27 @@ const HeroSection: React.FC = () => {
         <div 
           className="absolute left-1/2 -translate-x-1/2 bottom-[15%] md:bottom-[20%] w-[380px] h-[380px] md:w-[650px] md:h-[650px] rounded-full pointer-events-none z-[1]"
           style={{
-            background: 'radial-gradient(circle, rgba(255, 106, 0, 0.4) 0%, rgba(229, 184, 66, 0.2) 35%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(255, 106, 0, 0.35) 0%, rgba(229, 184, 66, 0.18) 35%, transparent 70%)',
             animation: 'portalAura 6s ease-in-out infinite'
           }}
         />
 
-        {/* Ambient Warm Corner Lights */}
-        <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#FF6A00]/15 blur-[120px] z-[1]" />
-        <div className="absolute top-1/3 -right-20 w-80 h-80 rounded-full bg-[#E5B842]/15 blur-[120px] z-[1]" />
+        {/* Realistic Shooting Stars with Incandescent Glowing Heads & Tapered Trails */}
+        <div 
+          className="absolute top-[14%] right-[16%] pointer-events-none z-[2] flex items-center"
+          style={{ animation: 'shootingStar1 8s cubic-bezier(0.25, 0.1, 0.25, 1) infinite 1.2s' }}
+        >
+          <div className="w-32 sm:w-44 h-[2px] bg-gradient-to-r from-transparent via-[#FF6A00]/80 via-[#FFE2A3] to-white" />
+          <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_2px_#FFF,0_0_16px_4px_#FF8A1F,0_0_24px_6px_#FF6A00]" />
+        </div>
 
-        {/* Shooting Stars / Meteors */}
         <div 
-          className="absolute top-[18%] right-[22%] w-[140px] h-[2px] bg-gradient-to-r from-transparent via-[#FFE2A3] to-[#FF6A00] rounded-full z-[2] opacity-0"
-          style={{ animation: 'meteor 7s ease-in-out infinite 1s' }}
-        />
-        <div 
-          className="absolute top-[28%] left-[28%] w-[100px] h-[2px] bg-gradient-to-r from-transparent via-[#FFE2A3] to-[#FF6A00] rounded-full z-[2] opacity-0"
-          style={{ animation: 'meteor 9s ease-in-out infinite 4s' }}
-        />
+          className="absolute top-[24%] left-[40%] pointer-events-none z-[2] flex items-center"
+          style={{ animation: 'shootingStar2 9.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite 4.8s' }}
+        >
+          <div className="w-24 sm:w-36 h-[1.5px] bg-gradient-to-r from-transparent via-[#FF8A1F]/70 via-[#FFE2A3] to-white" />
+          <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_2px_#FFF,0_0_12px_3px_#FFE2A3]" />
+        </div>
 
         {/* Drifting Golden Embers */}
         {particles.map(p => (
@@ -153,17 +185,19 @@ const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.55 }}
-          className="space-y-1 sm:space-y-2 mb-8"
+          className="space-y-3 mb-8 max-w-3xl mx-auto"
         >
-          <p className="font-orbitron text-base sm:text-lg md:text-xl font-bold tracking-widest text-[#F8F6F0]">
+          <p className="font-orbitron text-sm sm:text-base md:text-lg font-bold tracking-widest text-[#F8F6F0]">
             IN ASSOCIATION WITH <span className="text-[#FF8A1F] text-glow-portal">TECH TITANS</span>
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs sm:text-sm md:text-base text-[#A3A5AF] font-inter">
-            <span>Department of Information Technology</span>
-            <span className="hidden sm:inline text-[#E5B842]">•</span>
-            <span>School of Engineering and Technology</span>
-            <span className="hidden sm:inline text-[#E5B842]">•</span>
-            <span className="text-[#E5B842] font-medium">Dhanalakshmi Srinivasan University</span>
+          
+          {/* Frosted Glass High-Contrast Institutional Container */}
+          <div className="glass-panel px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl border border-white/20 sm:border-[#FF6A00]/30 shadow-[0_10px_30px_rgba(0,0,0,0.85)] flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs sm:text-sm md:text-base font-inter">
+            <span className="text-[#FFFDF7] font-bold tracking-wide">Department of Information Technology</span>
+            <span className="hidden sm:inline text-[#FF8A1F] font-black">•</span>
+            <span className="text-[#F8F6F0] font-semibold">School of Engineering and Technology</span>
+            <span className="hidden sm:inline text-[#FF8A1F] font-black">•</span>
+            <span className="text-[#FFE2A3] font-bold tracking-wide drop-shadow-[0_0_8px_rgba(255,226,163,0.5)]">Dhanalakshmi Srinivasan University</span>
           </div>
         </motion.div>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, User, ShieldCheck, Plus, Trash2 } from 'lucide-react';
+import { Users, User, ShieldCheck, Plus, Trash2, ArrowRight } from 'lucide-react';
 
 export interface TeamMember {
   name: string;
@@ -16,6 +16,7 @@ interface TeamFormProps {
   teamMembers: TeamMember[];
   setTeamMembers: React.Dispatch<React.SetStateAction<TeamMember[]>>;
   leadName: string;
+  onProceedToPayment?: () => void;
 }
 
 export const TeamForm: React.FC<TeamFormProps> = ({
@@ -256,7 +257,29 @@ export const TeamForm: React.FC<TeamFormProps> = ({
             <ShieldCheck className="w-4 h-4 text-[#E5B842] shrink-0" />
             <span>Squad pass permits all {totalMembers} members to participate across registered Day 1 & Day 2 events!</span>
           </div>
+
+          {onProceedToPayment && (
+            <button
+              type="button"
+              onClick={onProceedToPayment}
+              className="w-full py-4 px-6 rounded-xl glass-btn-primary text-[#060608] font-orbitron font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-xl hover:scale-[1.01] transition-transform"
+            >
+              <span>PROCEED TO PAYMENT SCREEN (₹{totalMembers * 200})</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
+      )}
+
+      {!isTeam && onProceedToPayment && (
+        <button
+          type="button"
+          onClick={onProceedToPayment}
+          className="w-full py-4 px-6 rounded-xl glass-btn-primary text-[#060608] font-orbitron font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-xl hover:scale-[1.01] transition-transform mt-6"
+        >
+          <span>PROCEED TO PAYMENT SCREEN (₹200)</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       )}
     </div>
   );

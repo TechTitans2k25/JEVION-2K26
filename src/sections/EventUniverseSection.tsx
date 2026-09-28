@@ -75,7 +75,7 @@ const EventUniverseSection: React.FC = () => {
         {/* Glass Event Cards Grid */}
         <motion.div 
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6"
         >
           <AnimatePresence mode="popLayout">
             {filteredEvents.map((event, index) => (
@@ -84,38 +84,38 @@ const EventUniverseSection: React.FC = () => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.35, delay: index * 0.04 }}
+                transition={{ duration: 0.3, delay: index * 0.03 }}
                 key={event.id}
-                className="glass-card rounded-2xl p-6 group flex flex-col justify-between h-full relative overflow-hidden"
+                className="glass-card rounded-xl sm:rounded-2xl p-3 sm:p-5 md:p-6 group flex flex-col justify-between h-full relative overflow-hidden"
               >
                 {/* Top Inner Specular Highlight */}
                 <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                 
                 <div>
                   {/* Top Bar: Icon + Badges */}
-                  <div className="flex items-start justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl glass-panel flex items-center justify-center border border-white/10 group-hover:border-[#FF6A00]/50 group-hover:scale-105 transition-all duration-300">
+                  <div className="flex items-start justify-between mb-2.5 sm:mb-4 gap-1.5">
+                    <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl glass-panel flex items-center justify-center border border-white/10 group-hover:border-[#FF6A00]/50 group-hover:scale-105 transition-all duration-300 shrink-0 [&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-6 sm:[&>svg]:h-6">
                       {event.icon}
                     </div>
-                    <div className="flex flex-col gap-1.5 items-end">
-                      <span className={`text-[10px] tracking-wider font-orbitron font-bold px-2.5 py-0.5 rounded-full ${
+                    <div className="flex flex-col gap-1 items-end shrink-0">
+                      <span className={`text-[8px] sm:text-[10px] tracking-wider font-orbitron font-bold px-1.5 sm:px-2.5 py-0.5 rounded-full ${
                         event.category === 'TECHNICAL'
                           ? 'bg-[#FF6A00]/15 text-[#FF8A1F] border border-[#FF6A00]/30'
                           : 'bg-[#E5B842]/15 text-[#FFE2A3] border border-[#E5B842]/30'
                       }`}>
-                        {event.category}
+                        {event.category === 'TECHNICAL' ? 'TECH' : 'NON-TECH'}
                       </span>
-                      <span className="text-[10px] tracking-wider font-orbitron font-medium px-2 py-0.5 rounded-full bg-white/[0.05] text-[#A3A5AF] border border-white/[0.08]">
+                      <span className="text-[8px] sm:text-[10px] tracking-wider font-orbitron font-medium px-1.5 sm:px-2 py-0.5 rounded-full bg-white/[0.05] text-[#A3A5AF] border border-white/[0.08]">
                         {event.day}
                       </span>
                     </div>
                   </div>
                   
                   {/* Title & Description */}
-                  <h3 className="text-lg sm:text-xl font-orbitron font-bold text-[#F8F6F0] mb-2 group-hover:text-[#FF8A1F] transition-colors">
+                  <h3 className="text-xs sm:text-base md:text-xl font-orbitron font-bold text-[#F8F6F0] mb-1 sm:mb-1.5 group-hover:text-[#FF8A1F] transition-colors truncate">
                     {event.title}
                   </h3>
-                  <p className="text-[#A3A5AF] text-xs sm:text-sm font-inter leading-relaxed mb-6">
+                  <p className="text-[#A3A5AF] text-[10px] sm:text-xs md:text-sm font-inter leading-tight sm:leading-relaxed mb-3 sm:mb-6 line-clamp-1 sm:line-clamp-2">
                     {event.shortDesc}
                   </p>
                 </div>
@@ -123,10 +123,11 @@ const EventUniverseSection: React.FC = () => {
                 {/* Action Link */}
                 <Link 
                   to={`/events/${event.id}`}
-                  className="inline-flex items-center text-xs sm:text-sm font-orbitron font-semibold text-[#FF8A1F] group-hover:text-[#FFE2A3] transition-colors mt-auto pt-4 border-t border-white/[0.06]"
+                  className="inline-flex items-center text-[10px] sm:text-xs md:text-sm font-orbitron font-semibold text-[#FF8A1F] group-hover:text-[#FFE2A3] transition-colors mt-auto pt-2 sm:pt-4 border-t border-white/[0.06]"
                 >
-                  <span>Explore Details</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1.5" />
+                  <span className="hidden sm:inline">Explore Details</span>
+                  <span className="sm:hidden">Details</span>
+                  <ArrowRight className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 ml-1 transition-transform group-hover:translate-x-1.5" />
                 </Link>
               </motion.div>
             ))}

@@ -51,6 +51,10 @@ export const events: Event[] = [
       name: 'Mrs. M. Sheeba',
       phone: '+91 9944481587'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mrs. M. Sheeba', phone: '+91 9944481587' },
+      { role: 'Student Coordinator', name: 'Vishva S', phone: '+91 9360729933' }
+    ],
     registrationOpen: true,
     order: 1
   },
@@ -99,6 +103,10 @@ export const events: Event[] = [
       name: 'Mr. S. Sashikumar',
       phone: '+91 9629301892'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mr. S. Sashikumar', phone: '+91 9629301892' },
+      { role: 'Student Coordinator', name: 'Girivaran C', phone: '+91 8056306369' }
+    ],
     registrationOpen: true,
     order: 2
   },
@@ -148,9 +156,13 @@ export const events: Event[] = [
     eligibility: 'Open to all cricket lovers and strategic masterminds.',
     submission: 'Bid paddles and franchise calculation sheets provided on spot.',
     contact: {
-      name: 'Vishva S',
-      phone: '+91 9360729933'
+      name: 'Mr. S. Sashikumar',
+      phone: '+91 9629301892'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mr. S. Sashikumar', phone: '+91 9629301892' },
+      { role: 'Student Coordinator', name: 'Vishva S', phone: '+91 9360729933' }
+    ],
     registrationOpen: true,
     order: 3
   },
@@ -197,9 +209,13 @@ export const events: Event[] = [
     eligibility: 'All creative shutterbugs and visual storytellers.',
     submission: 'Digital submission via drive link or memory card transfer.',
     contact: {
-      name: 'Girivaran C',
-      phone: '+91 8056306369'
+      name: 'Mrs. M. Sheeba',
+      phone: '+91 9944481587'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mrs. M. Sheeba', phone: '+91 9944481587' },
+      { role: 'Student Coordinator', name: 'Girivaran C', phone: '+91 8056306369' }
+    ],
     registrationOpen: true,
     order: 4
   },
@@ -243,9 +259,13 @@ export const events: Event[] = [
     eligibility: 'Open to all keen observers and trivia enthusiasts.',
     submission: 'Buzzer consoles and answer sheets provided at the venue.',
     contact: {
-      name: 'Vishva S',
-      phone: '+91 9360729933'
+      name: 'Mrs. M. Sheeba',
+      phone: '+91 9944481587'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mrs. M. Sheeba', phone: '+91 9944481587' },
+      { role: 'Student Coordinator', name: 'Vishva S', phone: '+91 9360729933' }
+    ],
     registrationOpen: true,
     order: 5
   },
@@ -299,6 +319,10 @@ export const events: Event[] = [
       name: 'Mr. S. Sashikumar',
       phone: '+91 9629301892'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mr. S. Sashikumar', phone: '+91 9629301892' },
+      { role: 'Student Coordinator', name: 'Girivaran C', phone: '+91 8056306369' }
+    ],
     registrationOpen: true,
     order: 6
   },
@@ -345,6 +369,10 @@ export const events: Event[] = [
       name: 'Mrs. M. Sheeba',
       phone: '+91 9944481587'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mrs. M. Sheeba', phone: '+91 9944481587' },
+      { role: 'Student Coordinator', name: 'Vishva S', phone: '+91 9360729933' }
+    ],
     registrationOpen: true,
     order: 7
   },
@@ -395,9 +423,13 @@ export const events: Event[] = [
     eligibility: 'Student filmmakers, editors, actors, and creators from any recognized institution.',
     submission: 'Google Drive / YouTube unlisted link submitted 24 hours prior to Day 2.',
     contact: {
-      name: 'Girivaran C',
-      phone: '+91 8056306369'
+      name: 'Mrs. M. Sheeba',
+      phone: '+91 9944481587'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mrs. M. Sheeba', phone: '+91 9944481587' },
+      { role: 'Student Coordinator', name: 'Girivaran C', phone: '+91 8056306369' }
+    ],
     registrationOpen: true,
     order: 8
   },
@@ -441,9 +473,13 @@ export const events: Event[] = [
     eligibility: 'Open to all cinephiles and movie enthusiasts.',
     submission: 'All audiovisual assets and buzzer equipment provided.',
     contact: {
-      name: 'Vishva S',
-      phone: '+91 9360729933'
+      name: 'Mr. S. Sashikumar',
+      phone: '+91 9629301892'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mr. S. Sashikumar', phone: '+91 9629301892' },
+      { role: 'Student Coordinator', name: 'Vishva S', phone: '+91 9360729933' }
+    ],
     registrationOpen: true,
     order: 9
   },
@@ -488,9 +524,13 @@ export const events: Event[] = [
     eligibility: 'All students ready for physical agility and sharp puzzle solving.',
     submission: 'Physical map and team tracker tokens issued at start line.',
     contact: {
-      name: 'Girivaran C',
-      phone: '+91 8056306369'
+      name: 'Mr. S. Sashikumar',
+      phone: '+91 9629301892'
     },
+    coordinators: [
+      { role: 'Faculty Coordinator', name: 'Mr. S. Sashikumar', phone: '+91 9629301892' },
+      { role: 'Student Coordinator', name: 'Girivaran C', phone: '+91 8056306369' }
+    ],
     registrationOpen: true,
     order: 10
   }

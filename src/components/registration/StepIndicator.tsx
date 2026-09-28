@@ -5,9 +5,10 @@ interface StepIndicatorProps {
   currentStep: number;
   totalSteps: number;
   labels: string[];
+  onStepClick?: (step: number) => void;
 }
 
-export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, totalSteps, labels }) => {
+export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, totalSteps, labels, onStepClick }) => {
   return (
     <div className="w-full py-6">
       <div className="flex items-center justify-between relative">
@@ -21,11 +22,17 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, total
           const stepNumber = index + 1;
           const isCompleted = stepNumber < currentStep;
           const isCurrent = stepNumber === currentStep;
+          const isClickable = isCompleted && onStepClick;
           
           return (
             <div key={stepNumber} className="relative z-10 flex flex-col items-center">
-              <div 
+              <button 
+                type="button"
+                disabled={!isClickable}
+                onClick={() => isClickable && onStepClick(stepNumber)}
                 className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all duration-300 ${
+                  isClickable ? 'cursor-pointer hover:scale-110 shadow-md' : 'cursor-default'
+                } ${
                   isCompleted 
                     ? 'bg-[#FF6A00] border-[#FF6A00] text-white' 
                     : isCurrent 
@@ -34,8 +41,8 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, total
                 }`}
               >
                 {isCompleted ? <Check className="w-5 h-5" /> : stepNumber}
-              </div>
-              <span className={`absolute top-12 text-xs text-center w-20 -ml-5 hidden md:block ${isCurrent ? 'text-[#FF6A00]' : 'text-[#A9A9A5]'}`}>
+              </button>
+              <span className={`absolute top-12 text-xs text-center w-20 -ml-5 hidden md:block ${isCurrent ? 'text-[#FF6A00]' : 'text-[#A3A5AF]'}`}>
                 {labels[index]}
               </span>
             </div>

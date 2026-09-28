@@ -12,7 +12,7 @@ const MobileBottomNav: React.FC = () => {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 pb-[env(safe-area-inset-bottom)] bg-[#0D0E10]/90 backdrop-blur-xl border-t border-[#5C421D]/30">
+    <div className="mobile-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-40 pb-[env(safe-area-inset-bottom)] bg-[#0D0E10]/95 backdrop-blur-xl border-t border-white/10 shadow-[0_-4px_25px_rgba(0,0,0,0.5)]">
       <nav className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => (
           <NavLink
@@ -20,12 +20,12 @@ const MobileBottomNav: React.FC = () => {
             to={item.path}
             className={({ isActive }) =>
               `flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${
-                isActive ? 'text-[#FF6A00]' : 'text-[#A9A9A5] hover:text-[#F5F2EA]'
+                isActive ? 'text-[#FF6A00] font-bold' : 'text-[#A3A5AF] hover:text-[#F8F6F0]'
               }`
             }
           >
             {item.icon}
-            <span className="text-[10px] font-medium tracking-wider uppercase">{item.name}</span>
+            <span className="text-[10px] font-medium tracking-wider uppercase font-orbitron">{item.name}</span>
           </NavLink>
         ))}
       </nav>

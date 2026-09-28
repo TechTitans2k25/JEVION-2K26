@@ -58,7 +58,7 @@ export const EventsPage: React.FC = () => {
         />
 
         {/* Events Grid */}
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        <motion.div layout className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6 mt-8 sm:mt-10">
           <AnimatePresence>
             {filteredEvents.map((event: Event) => (
               <motion.div
