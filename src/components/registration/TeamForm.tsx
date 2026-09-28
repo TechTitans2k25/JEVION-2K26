@@ -26,7 +26,8 @@ export const TeamForm: React.FC<TeamFormProps> = ({
   setTeamName,
   teamMembers,
   setTeamMembers,
-  leadName
+  leadName,
+  onProceedToPayment
 }) => {
   const handleAddMember = () => {
     if (teamMembers.length < 3) {

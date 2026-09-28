@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Layout from './components/layout/Layout';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 
 // Eager load Home
 import HomePage from './pages/HomePage';
@@ -73,9 +74,11 @@ const AnimatedRoutes = () => {
 
 function App() {
   return (
-    <Router>
-      <AnimatedRoutes />
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <AnimatedRoutes />
+      </Router>
+    </ErrorBoundary>
   );
 }
 
